@@ -51,8 +51,8 @@ export function Dashboard({ results, lastUpdated }: Props) {
 
         {/* Stats row */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
-          <StatCard label="High risk" value={high} accent="#ef4444" dimAccent="rgba(239,68,68,0.08)" borderColor="rgba(239,68,68,0.2)" />
-          <StatCard label="Medium risk" value={med} accent="#f97316" dimAccent="rgba(249,115,22,0.08)" borderColor="rgba(249,115,22,0.2)" />
+          <StatCard label="≥ 3% shorted" value={high} accent="#ef4444" dimAccent="rgba(239,68,68,0.08)" borderColor="rgba(239,68,68,0.2)" />
+          <StatCard label="1–3% shorted" value={med} accent="#f97316" dimAccent="rgba(249,115,22,0.08)" borderColor="rgba(249,115,22,0.2)" />
           <StatCard label="Active shorts" value={active} accent="#94a3b8" dimAccent="rgba(100,116,139,0.08)" borderColor="rgba(100,116,139,0.2)" />
           <StatCard label="Total tracked" value={results.length} accent="#64748b" dimAccent="rgba(71,85,105,0.06)" borderColor="rgba(71,85,105,0.15)" />
         </div>

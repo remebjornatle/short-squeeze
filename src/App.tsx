@@ -14,7 +14,7 @@ export default function App() {
       .then(instruments => {
         const scored = instruments
           .map(computeRiskScore)
-          .sort((a, b) => b.score - a.score)
+          .sort((a, b) => b.currentShortPct - a.currentShortPct)
         setResults(scored)
       })
       .catch(e => setError(e.message))

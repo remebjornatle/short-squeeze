@@ -3,7 +3,7 @@ import type { RiskResult } from '../lib/types'
 import { RiskBadge } from './RiskBadge'
 import { Sparkline } from './Sparkline'
 
-type SortKey = 'issuerName' | 'currentShortPct' | 'change30d' | 'holders' | 'score'
+type SortKey = 'issuerName' | 'currentShortPct' | 'change30d' | 'holders'
 type SortDir = 'asc' | 'desc'
 
 interface Props {
@@ -16,7 +16,6 @@ const COLS: { key: SortKey; label: string; align: React.CSSProperties['textAlign
   { key: 'currentShortPct', label: 'Short %', align: 'right' },
   { key: 'change30d', label: '30d Δ', align: 'right' },
   { key: 'holders', label: 'Holders', align: 'right' },
-  { key: 'score', label: 'Score', align: 'right' },
 ]
 
 const th: React.CSSProperties = {
@@ -35,7 +34,7 @@ const thFirst: React.CSSProperties = { ...th, paddingLeft: 28 }
 const thLast: React.CSSProperties = { ...th, paddingRight: 28 }
 
 export function RiskTable({ results, onSelect }: Props) {
-  const [sortKey, setSortKey] = useState<SortKey>('score')
+  const [sortKey, setSortKey] = useState<SortKey>('currentShortPct')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [hovered, setHovered] = useState<string | null>(null)
 
@@ -110,15 +109,6 @@ export function RiskTable({ results, onSelect }: Props) {
                 </td>
                 <td style={{ padding: '14px 20px', textAlign: 'right', color: '#64748b' }}>
                   {r.holders > 0 ? r.holders : '–'}
-                </td>
-                <td style={{ padding: '14px 20px', textAlign: 'right' }}>
-                  <span style={{
-                    fontWeight: 700,
-                    fontVariantNumeric: 'tabular-nums',
-                    color: r.score >= 70 ? '#f87171' : r.score >= 40 ? '#fb923c' : '#475569',
-                  }}>
-                    {r.score > 0 ? r.score : '–'}
-                  </span>
                 </td>
                 <td style={{ padding: '14px 20px' }}>
                   <Sparkline data={r.sparklineData} rising={r.change30d > 0} />

@@ -26,7 +26,6 @@ export interface RiskResult {
   currentShortPct: number
   change30d: number
   holders: number
-  score: number
   tier: RiskTier
   sparklineData: { date: string; pct: number }[]
   events: AggregatedShortEvent[]
