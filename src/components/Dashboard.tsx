@@ -22,72 +22,80 @@ export function Dashboard({ results, lastUpdated }: Props) {
   )
 
   return (
-    <div className="min-h-screen bg-[#0c0e14]">
-      {/* Top bar */}
-      <header className="border-b border-slate-800/80 bg-[#0f1117]/80 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="text-red-500 text-lg leading-none">⚡</span>
-            <span className="font-semibold text-white tracking-tight">Short Squeeze Risk</span>
-            <span className="hidden sm:inline text-slate-600 text-sm">· Norwegian stocks</span>
+    <div style={{ background: '#0c0e15', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+
+      {/* ── Header ───────────────────────────────────────────── */}
+      <header style={{
+        background: 'linear-gradient(180deg, #12141e 0%, #0c0e15 100%)',
+        borderBottom: '1px solid #1e2130',
+        padding: '0 48px',
+      }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ color: '#ef4444', fontSize: 20 }}>⚡</span>
+            <span style={{ color: '#f1f5f9', fontWeight: 700, fontSize: 16, letterSpacing: '-0.02em' }}>
+              Short Squeeze Risk
+            </span>
+            <span style={{ color: '#334155', fontSize: 14, marginLeft: 4 }}>· Norwegian stocks</span>
           </div>
-          <span className="text-slate-600 text-xs">
-            Updated <span className="text-slate-500">{lastUpdated.slice(0, 10)}</span>
-          </span>
+          <div style={{ color: '#475569', fontSize: 12 }}>
+            Data via <a href="https://ssr.finanstilsynet.no" target="_blank" rel="noreferrer"
+              style={{ color: '#64748b', textDecoration: 'underline' }}>Finanstilsynet</a>
+            {' · '}Updated <span style={{ color: '#64748b' }}>{lastUpdated.slice(0, 10)}</span>
+          </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats + search row */}
-        <div className="flex flex-wrap gap-3 items-end justify-between mb-6">
-          <div className="flex gap-3 flex-wrap">
-            <StatCard
-              label="High risk"
-              value={high}
-              valueClass="text-red-400"
-              borderClass="border-red-500/25 bg-red-500/8"
-            />
-            <StatCard
-              label="Medium risk"
-              value={med}
-              valueClass="text-orange-400"
-              borderClass="border-orange-500/25 bg-orange-500/8"
-            />
-            <StatCard
-              label="Active shorts"
-              value={active}
-              valueClass="text-slate-300"
-              borderClass="border-slate-700 bg-slate-800/40"
-            />
-            <StatCard
-              label="Total tracked"
-              value={results.length}
-              valueClass="text-slate-400"
-              borderClass="border-slate-700/60 bg-slate-800/20"
-            />
-          </div>
+      {/* ── Page body ────────────────────────────────────────── */}
+      <div style={{ maxWidth: 1320, margin: '0 auto', padding: '40px 48px 80px' }}>
 
+        {/* Stats row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+          <StatCard label="High risk" value={high} accent="#ef4444" dimAccent="rgba(239,68,68,0.08)" borderColor="rgba(239,68,68,0.2)" />
+          <StatCard label="Medium risk" value={med} accent="#f97316" dimAccent="rgba(249,115,22,0.08)" borderColor="rgba(249,115,22,0.2)" />
+          <StatCard label="Active shorts" value={active} accent="#94a3b8" dimAccent="rgba(100,116,139,0.08)" borderColor="rgba(100,116,139,0.2)" />
+          <StatCard label="Total tracked" value={results.length} accent="#64748b" dimAccent="rgba(71,85,105,0.06)" borderColor="rgba(71,85,105,0.15)" />
+        </div>
+
+        {/* Toolbar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+          <p style={{ color: '#475569', fontSize: 13 }}>
+            {filtered.length} {filtered.length === 1 ? 'company' : 'companies'} · click any row for full history
+          </p>
           <input
             type="search"
             placeholder="Search company or ISIN…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-64 bg-slate-800/70 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-200 placeholder:text-slate-600 outline-none focus:border-slate-500 focus:bg-slate-800 transition-colors"
+            style={{
+              background: '#13151f',
+              border: '1px solid #1e2436',
+              borderRadius: 8,
+              padding: '8px 14px',
+              color: '#e2e8f0',
+              fontSize: 13,
+              width: 240,
+              outline: 'none',
+            }}
           />
         </div>
 
         {/* Table card */}
-        <div className="bg-[#13151f] border border-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/30">
+        <div style={{
+          background: '#13151f',
+          border: '1px solid #1e2130',
+          borderRadius: 16,
+          overflow: 'hidden',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
+        }}>
           <RiskTable results={filtered} onSelect={setSelected} />
         </div>
 
-        <p className="text-slate-700 text-xs mt-5 text-center leading-relaxed">
-          Only positions ≥ 0.5% of share capital are publicly reported per EU Short Selling Regulation 236/2012.
-          <br className="hidden sm:block" />
+        <p style={{ color: '#334155', fontSize: 12, marginTop: 20, textAlign: 'center', lineHeight: 1.7 }}>
+          Only positions ≥ 0.5% of share capital are publicly reported (EU Short Selling Regulation 236/2012).
           Risk score is indicative only — not financial advice.
-          Data: <a href="https://ssr.finanstilsynet.no" target="_blank" rel="noreferrer" className="underline hover:text-slate-500 transition-colors">Finanstilsynet SSR</a>
         </p>
-      </main>
+      </div>
 
       {selected && (
         <DetailPanel result={selected} onClose={() => setSelected(null)} />
@@ -96,21 +104,18 @@ export function Dashboard({ results, lastUpdated }: Props) {
   )
 }
 
-function StatCard({
-  label,
-  value,
-  valueClass,
-  borderClass,
-}: {
-  label: string
-  value: number
-  valueClass: string
-  borderClass: string
+function StatCard({ label, value, accent, dimAccent, borderColor }: {
+  label: string; value: number; accent: string; dimAccent: string; borderColor: string
 }) {
   return (
-    <div className={`border rounded-xl px-5 py-3 min-w-[100px] ${borderClass}`}>
-      <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className={`text-2xl font-bold tabular-nums ${valueClass}`}>{value}</p>
+    <div style={{
+      background: dimAccent,
+      border: `1px solid ${borderColor}`,
+      borderRadius: 12,
+      padding: '18px 24px',
+    }}>
+      <p style={{ color: '#64748b', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>{label}</p>
+      <p style={{ color: accent, fontSize: 32, fontWeight: 700, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{value}</p>
     </div>
   )
 }
